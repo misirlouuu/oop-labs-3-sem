@@ -1,6 +1,6 @@
 using Backups.Entities;
 
-namespace Backups.Services;
+namespace Backups.Interfaces;
 
 public interface IBackupTask
 {

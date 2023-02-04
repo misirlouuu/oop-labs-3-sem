@@ -1,15 +1,16 @@
+using Backups.Interfaces;
 using Backups.Visitors;
 
 namespace Backups.Composites;
 
 public class FolderRepositoryObject : IRepositoryObject
 {
-    private readonly Func<IReadOnlyCollection<IRepositoryObject>> _children;
+    private readonly Func<IReadOnlyCollection<IRepositoryObject>> _factory;
 
     public FolderRepositoryObject(Func<IReadOnlyCollection<IRepositoryObject>> factory, string name)
     {
         ArgumentNullException.ThrowIfNull(factory);
-        _children = factory;
+        _factory = factory;
 
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentNullException(name);
@@ -17,7 +18,7 @@ public class FolderRepositoryObject : IRepositoryObject
     }
 
     public string Name { get; }
-    public IReadOnlyCollection<IRepositoryObject> Children => _children.Invoke();
+    public IEnumerable<IRepositoryObject> Children => _factory.Invoke();
 
     public void Accept(IRepositoryObjectVisitor visitor)
     {

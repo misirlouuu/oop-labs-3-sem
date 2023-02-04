@@ -1,4 +1,5 @@
 using Backups.Composites;
+using Backups.Interfaces;
 using Backups.Repositories;
 
 namespace Backups.Storages;
@@ -20,6 +21,6 @@ public class SplitStorage : IStorage
 
     public IReadOnlyCollection<IRepositoryObject> GetRepositoryObjects()
     {
-        throw new NotImplementedException();
+        return _storages.SelectMany(storage => storage.GetRepositoryObjects()).ToArray();
     }
 }

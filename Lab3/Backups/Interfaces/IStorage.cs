@@ -1,6 +1,6 @@
 using Backups.Composites;
 
-namespace Backups.Storages;
+namespace Backups.Interfaces;
 
 public interface IStorage
 {

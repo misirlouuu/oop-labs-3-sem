@@ -1,6 +1,7 @@
 using System.IO.Compression;
+using Backups.Composites;
 
-namespace Backups.Composites;
+namespace Backups.Interfaces;
 
 public interface IZipObject
 {

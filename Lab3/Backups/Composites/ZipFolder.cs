@@ -1,16 +1,15 @@
 using System.Collections.ObjectModel;
 using System.IO.Compression;
+using Backups.Interfaces;
 
 namespace Backups.Composites;
 
 public class ZipFolder : IZipObject
 {
-    private readonly List<IZipObject> _children;
-
-    public ZipFolder(List<IZipObject> children, string name)
+    public ZipFolder(IReadOnlyCollection<IZipObject> children, string name)
     {
         ArgumentNullException.ThrowIfNull(children);
-        _children = children;
+        Children = children;
 
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentNullException(name);
@@ -18,7 +17,7 @@ public class ZipFolder : IZipObject
     }
 
     public string Name { get; }
-    public IReadOnlyCollection<IZipObject> Children => _children;
+    public IReadOnlyCollection<IZipObject> Children { get; }
 
     public IRepositoryObject GetRepositoryObject(ZipArchiveEntry zipEntry)
     {
@@ -27,10 +26,10 @@ public class ZipFolder : IZipObject
             var archive = new ZipArchive(zipEntry.Open(), ZipArchiveMode.Read);
 
             var repositoryObjects = archive.Entries
-                .Select(entry => _children
-                    .First(zipObject => entry.Name.Equals(zipObject.Name))
+                .Select(entry => Children
+                    .First(zipObject => entry.Name == zipObject.Name)
                     .GetRepositoryObject(entry))
-                .ToList();
+                .ToArray();
 
             return repositoryObjects;
         }

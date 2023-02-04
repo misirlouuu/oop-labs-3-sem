@@ -1,10 +1,13 @@
 using Backups.Exceptions;
+using Backups.Interfaces;
 
 namespace Backups.Entities;
 
 public class Backup : IBackup
 {
     private readonly List<RestorePoint> _backupCopy = new ();
+
+    public IReadOnlyCollection<RestorePoint> BackupCopy => _backupCopy;
 
     public RestorePoint AddRestorePoint(RestorePoint restorePoint)
     {

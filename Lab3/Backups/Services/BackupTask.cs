@@ -2,6 +2,7 @@ using Backups.Algorithms;
 using Backups.Archivers;
 using Backups.Entities;
 using Backups.Exceptions;
+using Backups.Interfaces;
 using Backups.Repositories;
 using Backups.Storages;
 
@@ -13,7 +14,6 @@ public class BackupTask : IBackupTask
     private readonly IStorageAlgorithm _algorithm;
     private readonly IRepository _repository;
     private readonly IArchiver _archiver;
-    private IBackup _backup = new Backup();
 
     public BackupTask(
         string name,
@@ -40,6 +40,7 @@ public class BackupTask : IBackupTask
     }
 
     public string Name { get; }
+    public IBackup Backup { get; } = new Backup();
 
     public void Run()
     {
@@ -48,7 +49,7 @@ public class BackupTask : IBackupTask
         IStorage storage = _algorithm.Run(_trackingObjects, _repository, _archiver);
         var restorePoint = new RestorePoint(_trackingObjects, storage);
 
-        _backup.AddRestorePoint(restorePoint);
+        Backup.AddRestorePoint(restorePoint);
     }
 
     public BackupObject AddBackupObject(BackupObject backupObject)

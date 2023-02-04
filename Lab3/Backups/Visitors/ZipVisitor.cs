@@ -1,5 +1,6 @@
 using System.IO.Compression;
 using Backups.Composites;
+using Backups.Interfaces;
 using ZipFile = Backups.Composites.ZipFile;
 
 namespace Backups.Visitors;
@@ -7,18 +8,17 @@ namespace Backups.Visitors;
 public class ZipVisitor : IRepositoryObjectVisitor
 {
     private readonly Stack<ZipArchive> _zipArchives;
-    private readonly Stack<List<IZipObject>> _zipObjects;
 
     public ZipVisitor(ZipArchive archive)
     {
         _zipArchives = new Stack<ZipArchive>();
         _zipArchives.Push(archive);
 
-        _zipObjects = new Stack<List<IZipObject>>();
-        _zipObjects.Push(new List<IZipObject>());
+        ZipObjects = new Stack<List<IZipObject>>();
+        ZipObjects.Push(new List<IZipObject>());
     }
 
-    public Stack<List<IZipObject>> ZipObjects => _zipObjects;
+    public Stack<List<IZipObject>> ZipObjects { get; }
 
     public void Visit(FileRepositoryObject file)
     {
@@ -26,34 +26,32 @@ public class ZipVisitor : IRepositoryObjectVisitor
 
         ZipArchive zipArchive = _zipArchives.Peek();
         ZipArchiveEntry zipArchiveEntry = zipArchive.CreateEntry(file.Name);
+
         using Stream stream = zipArchiveEntry.Open();
         using Stream fileStream = file.Stream;
         fileStream.CopyTo(stream);
 
         var zipFile = new ZipFile(file.Name);
-        _zipObjects.Peek().Add(zipFile);
+        ZipObjects.Peek().Add(zipFile);
     }
 
     public void Visit(FolderRepositoryObject folder)
     {
         ArgumentNullException.ThrowIfNull(folder);
 
-        var zipFolder = new ZipFolder(new List<IZipObject>(_zipObjects.Pop()), folder.Name);
+        var zipFolder = new ZipFolder(new List<IZipObject>(ZipObjects.Pop()), folder.Name);
+
         ZipArchive zipArchive = _zipArchives.Peek();
         ZipArchiveEntry zipArchiveEntry = zipArchive.CreateEntry(folder.Name + ".zip");
         using Stream stream = zipArchiveEntry.Open();
 
         using var archive = new ZipArchive(stream, ZipArchiveMode.Create);
         _zipArchives.Push(archive);
-        _zipObjects.Push(new List<IZipObject>());
+        ZipObjects.Push(new List<IZipObject>());
 
-        foreach (var repositoryObject in folder.Children)
-        {
-            repositoryObject.Accept(this);
-        }
+        folder.Children.ToList().ForEach(repositoryObject => repositoryObject.Accept(this));
 
-        // folder.RepositoryObjects.ToList().ForEach(repositoryObject => repositoryObject.Accept(this));
-        _zipObjects.Peek().Add(zipFolder);
+        ZipObjects.Peek().Add(zipFolder);
         _zipArchives.Pop();
     }
 }

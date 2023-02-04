@@ -1,5 +1,6 @@
 using Backups.Composites;
 using Backups.Exceptions;
+using Backups.Interfaces;
 using Backups.Repositories;
 
 namespace Backups.Entities;

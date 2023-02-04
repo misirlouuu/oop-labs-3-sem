@@ -18,27 +18,10 @@ public static class Program
         var backupObject2 = new BackupObject(repository, @"testFolder");
         var backupObjects = new List<BackupObject> { backupObject1, backupObject2};
         
-        var algorithm = new SplitStorageAlgorithm();
+        var algorithm = new SingleStorageAlgorithm();
         var archiver = new Archiver();
         
-        var backupTask = new BackupTask(" test8 split", backupObjects, algorithm, storageRepository, archiver);
+        var backupTask = new BackupTask(" test12 single", backupObjects, algorithm, storageRepository, archiver);
         backupTask.Run();
-        
-        // const string path1 = @"/Users/ekaterina/Desktop/Backups";
-        // const string path2 = @"/Users/ekaterina/Desktop/Backups.Tests";
-        //
-        // var repository = new FileSystemRepository(path1);
-        // var storageRepository = new FileSystemRepository(path2);
-        //
-        // var algorithm = new SplitStorageAlgorithm();
-        // var archiver = new Archiver();
-        //
-        // var backupObject1 = new BackupObject(repository, @"Backup objects/1.pdf");
-        // var backupObject2 = new BackupObject(repository, @"Backup objects/f1");
-        //
-        // var backupObjects = new List<BackupObject> { backupObject1, backupObject2};
-        //
-        // var backupTask = new BackupTask("test2", backupObjects, algorithm, storageRepository, archiver);
-        // backupTask.Run();
     }
 }

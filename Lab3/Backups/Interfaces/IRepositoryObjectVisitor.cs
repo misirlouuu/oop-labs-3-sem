@@ -1,6 +1,6 @@
 using Backups.Composites;
 
-namespace Backups.Visitors;
+namespace Backups.Interfaces;
 
 public interface IRepositoryObjectVisitor
 {

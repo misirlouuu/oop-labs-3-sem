@@ -1,15 +1,16 @@
 using System.IO.Compression;
+using Backups.Interfaces;
 
 namespace Backups.Composites;
 
 public class ZipFile : IZipObject
 {
-    public ZipFile(string name)
+    public ZipFile(string fileName)
     {
-        if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentNullException(name);
+        if (string.IsNullOrWhiteSpace(fileName))
+            throw new ArgumentNullException(fileName);
 
-        Name = name;
+        Name = fileName;
     }
 
     public string Name { get; }
