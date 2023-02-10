@@ -1,8 +1,9 @@
 using System.Collections.ObjectModel;
+using Banks.Models.Observers;
 
 namespace Banks.Entities;
 
-public class Client : IEquatable<Client>
+public class Client : IEquatable<Client>, IObserver
 {
     private readonly List<string> _notifications = new ();
     public Client(string firstName, string secondName, string? passport, string? address)
