@@ -63,7 +63,7 @@ public class InMemoryRepository : IDisposable, IRepository
     {
         if (string.IsNullOrWhiteSpace(path))
             throw new ArgumentNullException(path);
-        RootPath = Path.GetFullPath(path, RootPath);
+        RootPath = new UPath(path).ToAbsolute().ToString();
     }
 
     public bool Exists(string relativePath)
@@ -94,7 +94,7 @@ public class InMemoryRepository : IDisposable, IRepository
         if (string.IsNullOrWhiteSpace(relativePath))
             throw new ArgumentNullException(relativePath);
 
-        string absolutePath = Path.GetFullPath(relativePath, RootPath);
+        string absolutePath = new UPath(relativePath).ToAbsolute().ToString();
 
         var repositoryObjects = _fs.EnumerateDirectories(new UPath(absolutePath))
             .Select(upath => GetRepositoryObject(upath.ToString()))
