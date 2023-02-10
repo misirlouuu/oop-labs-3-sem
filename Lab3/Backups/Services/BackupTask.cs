@@ -44,7 +44,8 @@ public class BackupTask : IBackupTask
 
     public void Run()
     {
-        _repository.ChangeRootDirectory($"Backup Task{Name}{Path.DirectorySeparatorChar}Restore Point{Guid.NewGuid()}");
+        char separator = _repository is InMemoryRepository ? '/' : Path.DirectorySeparatorChar;
+        _repository.ChangeRootDirectory($"Backup Task{Name}{separator}Restore Point{Guid.NewGuid()}");
 
         IStorage storage = _algorithm.Run(_trackingObjects, _repository, _archiver);
         var restorePoint = new RestorePoint(_trackingObjects, storage);
