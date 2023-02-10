@@ -1,6 +1,6 @@
 namespace Banks.Models.Observers;
 
-public interface IObserver
+public interface ISubscriber
 {
     void Update(string message);
 }

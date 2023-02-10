@@ -3,7 +3,7 @@ using Banks.Models.Observers;
 
 namespace Banks.Entities;
 
-public class Client : IEquatable<Client>, IObserver
+public class Client : IEquatable<Client>, ISubscriber
 {
     private readonly List<string> _notifications = new ();
     public Client(string firstName, string secondName, string? passport, string? address)
