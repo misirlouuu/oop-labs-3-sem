@@ -9,25 +9,25 @@ public class ClientBuilder
     private string? _passport;
     private string? _address;
 
-    public ClientBuilder WithFirstName(string firstName)
+    public ClientBuilder WithFirstName(string? firstName)
     {
         _firstName = firstName;
         return this;
     }
 
-    public ClientBuilder WithSecondName(string secondName)
+    public ClientBuilder WithSecondName(string? secondName)
     {
         _secondName = secondName;
         return this;
     }
 
-    public ClientBuilder WithPassport(string passport)
+    public ClientBuilder WithPassport(string? passport)
     {
         _passport = passport;
         return this;
     }
 
-    public ClientBuilder WithAddress(string address)
+    public ClientBuilder WithAddress(string? address)
     {
         _address = address;
         return this;

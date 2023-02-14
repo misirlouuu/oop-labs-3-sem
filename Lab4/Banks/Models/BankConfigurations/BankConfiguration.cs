@@ -1,11 +1,10 @@
 namespace Banks.Models.BankConfigurations;
 
-public class BankConfiguration
+public class BankConfiguration : IBankConfiguration
 {
     public BankConfiguration(
         decimal debitInterestRate,
-        IReadOnlyCollection<decimal> depositLimits,
-        IReadOnlyCollection<decimal> depositPercentages,
+        DepositInformation depositInformation,
         decimal creditLimit,
         decimal commission,
         decimal transactionLimit)
@@ -17,20 +16,12 @@ public class BankConfiguration
         Commission = commission;
         TransactionLimit = transactionLimit;
 
-        ArgumentNullException.ThrowIfNull(depositLimits);
-        if (depositLimits.Any(limit => limit <= 0))
-            throw new Exception();
-        DepositLimits = depositLimits;
-
-        ArgumentNullException.ThrowIfNull(depositPercentages);
-        if (depositPercentages.Any(percentage => percentage <= 0))
-            throw new Exception();
-        DepositPercentages = depositPercentages;
+        ArgumentNullException.ThrowIfNull(depositInformation);
+        DepositInformation = depositInformation;
     }
 
     public decimal DebitInterestRate { get; private set; }
-    public IReadOnlyCollection<decimal> DepositLimits { get; private set; }
-    public IReadOnlyCollection<decimal> DepositPercentages { get; private set; }
+    public DepositInformation DepositInformation { get; private set; }
     public decimal CreditLimit { get; private set; }
     public decimal Commission { get; private set; }
     public decimal TransactionLimit { get; private set; }
@@ -42,22 +33,10 @@ public class BankConfiguration
         DebitInterestRate = debitInterestRate;
     }
 
-    public void ChangeDepositLimits(IReadOnlyCollection<decimal> depositLimits)
+    public void ChangeDepositInformation(DepositInformation depositInformation)
     {
-        ArgumentNullException.ThrowIfNull(depositLimits);
-
-        if (!DepositPercentages.Count.Equals(depositLimits.Count))
-            throw new Exception();
-        DepositLimits = depositLimits;
-    }
-
-    public void ChangeDepositPercentages(IReadOnlyCollection<decimal> depositPercentages)
-    {
-        ArgumentNullException.ThrowIfNull(depositPercentages);
-
-        if (!DepositLimits.Count.Equals(depositPercentages.Count))
-            throw new Exception();
-        DepositPercentages = depositPercentages;
+        ArgumentNullException.ThrowIfNull(depositInformation);
+        DepositInformation = depositInformation;
     }
 
     public void ChangeCreditLimit(decimal creditLimit)
