@@ -1,6 +1,6 @@
-using Backups.Composites;
 using Backups.Exceptions;
 using Backups.Interfaces;
+using Backups.Models.Composites;
 using Zio;
 using Zio.FileSystems;
 
@@ -15,7 +15,10 @@ public class InMemoryRepository : IDisposable, IRepository
     public InMemoryRepository(string rootPath)
     {
         if (string.IsNullOrWhiteSpace(rootPath))
+        {
             throw new ArgumentNullException(rootPath);
+        }
+
         RootPath = rootPath;
 
         _fs = new MemoryFileSystem();
@@ -26,23 +29,27 @@ public class InMemoryRepository : IDisposable, IRepository
 
     public string RootPath { get; private set; }
 
-    public Stream OpenWrite(string relativePath)
+    public Stream OpenWrite(string path)
     {
-        if (string.IsNullOrWhiteSpace(relativePath))
-            throw new ArgumentNullException(relativePath);
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            throw new ArgumentNullException(path);
+        }
 
-        UPath absolutePath = new UPath(relativePath).ToAbsolute();
+        UPath absolutePath = new UPath(path).ToAbsolute();
         _fs.CreateDirectory(absolutePath.GetDirectory());
 
         return _fs.OpenFile(absolutePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
     }
 
-    public IRepositoryObject GetRepositoryObject(string relativePath)
+    public IRepositoryObject GetRepositoryObject(string path)
     {
-        if (string.IsNullOrWhiteSpace(relativePath))
-            throw new ArgumentNullException(relativePath);
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            throw new ArgumentNullException(path);
+        }
 
-        UPath absolutePath = new UPath(relativePath).ToAbsolute();
+        UPath absolutePath = new UPath(path).ToAbsolute();
 
         if (_fs.FileExists(absolutePath))
         {
@@ -62,24 +69,21 @@ public class InMemoryRepository : IDisposable, IRepository
     public void ChangeRootDirectory(string path)
     {
         if (string.IsNullOrWhiteSpace(path))
+        {
             throw new ArgumentNullException(path);
+        }
+
         RootPath = new UPath(path).ToAbsolute().ToString();
     }
 
-    public bool Exists(string relativePath)
+    public void WriteAllText(string path, string text)
     {
-        if (string.IsNullOrWhiteSpace(relativePath))
-            throw new ArgumentNullException(relativePath);
-        UPath absolutePath = new UPath(relativePath).ToAbsolute();
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            throw new ArgumentNullException(path);
+        }
 
-        return _fs.DirectoryExists(absolutePath.GetDirectory());
-    }
-
-    public void WriteAllText(string relativePath, string text)
-    {
-        if (string.IsNullOrWhiteSpace(relativePath))
-            throw new ArgumentNullException(relativePath);
-        UPath absolutePath = new UPath(relativePath).ToAbsolute();
+        UPath absolutePath = new UPath(path).ToAbsolute();
 
         _fs.WriteAllText(absolutePath, text);
     }
@@ -89,12 +93,14 @@ public class InMemoryRepository : IDisposable, IRepository
         _fs.Dispose();
     }
 
-    private IReadOnlyCollection<IRepositoryObject> Factory(string relativePath)
+    private IReadOnlyCollection<IRepositoryObject> Factory(string path)
     {
-        if (string.IsNullOrWhiteSpace(relativePath))
-            throw new ArgumentNullException(relativePath);
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            throw new ArgumentNullException(path);
+        }
 
-        string absolutePath = new UPath(relativePath).ToAbsolute().ToString();
+        string absolutePath = new UPath(path).ToAbsolute().ToString();
 
         var repositoryObjects = _fs.EnumerateDirectories(new UPath(absolutePath))
             .Select(upath => GetRepositoryObject(upath.ToString()))

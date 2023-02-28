@@ -1,4 +1,3 @@
-using Backups.Composites;
 using Backups.Exceptions;
 using Backups.Interfaces;
 using Backups.Repositories;
@@ -8,20 +7,23 @@ namespace Backups.Entities;
 public class BackupObject
 {
     private readonly IRepository _repository;
-    private readonly string _relativePath;
+    private readonly string _path;
 
-    public BackupObject(IRepository repository, string relativePath)
+    public BackupObject(IRepository repository, string path)
     {
         ArgumentNullException.ThrowIfNull(repository);
+
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            throw new ArgumentNullException(path);
+        }
+
         _repository = repository;
-
-        if (string.IsNullOrWhiteSpace(relativePath))
-            throw new ArgumentNullException(relativePath);
-        _relativePath = relativePath;
-
-        if (!_repository.Exists(relativePath))
-            throw new BackupObjectIsNotFoundException();
+        _path = path;
     }
 
-    public IRepositoryObject GetRepositoryObject() => _repository.GetRepositoryObject(_relativePath);
+    public IRepositoryObject GetRepositoryObject()
+    {
+        return _repository.GetRepositoryObject(_path);
+    }
 }

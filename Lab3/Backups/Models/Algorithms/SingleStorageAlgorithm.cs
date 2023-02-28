@@ -1,10 +1,7 @@
-using Backups.Archivers;
 using Backups.Entities;
 using Backups.Interfaces;
-using Backups.Repositories;
-using Backups.Storages;
 
-namespace Backups.Algorithms;
+namespace Backups.Models.Algorithms;
 
 public class SingleStorageAlgorithm : IStorageAlgorithm
 {
@@ -14,7 +11,7 @@ public class SingleStorageAlgorithm : IStorageAlgorithm
         ArgumentNullException.ThrowIfNull(storageRepository);
         ArgumentNullException.ThrowIfNull(archiver);
 
-        var repositoryObjects = trackingObjects
+        IRepositoryObject[] repositoryObjects = trackingObjects
             .Select(backupObject => backupObject.GetRepositoryObject())
             .ToArray();
 

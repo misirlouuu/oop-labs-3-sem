@@ -1,9 +1,9 @@
 using System.IO.Compression;
-using Backups.Composites;
 using Backups.Interfaces;
-using ZipFile = Backups.Composites.ZipFile;
+using Backups.Models.Composites;
+using ZipFile = Backups.Models.Composites.ZipFile;
 
-namespace Backups.Visitors;
+namespace Backups.Models;
 
 public class ZipVisitor : IRepositoryObjectVisitor
 {

@@ -1,11 +1,9 @@
 using System.IO.Compression;
-using Backups.Composites;
 using Backups.Interfaces;
-using Backups.Repositories;
-using Backups.Storages;
-using Backups.Visitors;
+using Backups.Models.Composites;
+using Backups.Models.Storages;
 
-namespace Backups.Archivers;
+namespace Backups.Models;
 
 public class Archiver : IArchiver
 {

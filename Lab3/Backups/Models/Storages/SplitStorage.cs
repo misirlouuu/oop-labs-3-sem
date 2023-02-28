@@ -1,8 +1,6 @@
-using Backups.Composites;
 using Backups.Interfaces;
-using Backups.Repositories;
 
-namespace Backups.Storages;
+namespace Backups.Models.Storages;
 
 public class SplitStorage : IStorage
 {
@@ -11,9 +9,9 @@ public class SplitStorage : IStorage
     public SplitStorage(IRepository repository, IReadOnlyCollection<ZipStorage> storages)
     {
         ArgumentNullException.ThrowIfNull(repository);
-        Repository = repository;
-
         ArgumentNullException.ThrowIfNull(storages);
+
+        Repository = repository;
         _storages = storages;
     }
 

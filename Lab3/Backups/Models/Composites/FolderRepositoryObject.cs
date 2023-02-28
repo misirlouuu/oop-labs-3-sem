@@ -1,7 +1,6 @@
 using Backups.Interfaces;
-using Backups.Visitors;
 
-namespace Backups.Composites;
+namespace Backups.Models.Composites;
 
 public class FolderRepositoryObject : IRepositoryObject
 {
@@ -10,10 +9,13 @@ public class FolderRepositoryObject : IRepositoryObject
     public FolderRepositoryObject(Func<IReadOnlyCollection<IRepositoryObject>> factory, string name)
     {
         ArgumentNullException.ThrowIfNull(factory);
-        _factory = factory;
 
         if (string.IsNullOrWhiteSpace(name))
+        {
             throw new ArgumentNullException(name);
+        }
+
+        _factory = factory;
         Name = name;
     }
 

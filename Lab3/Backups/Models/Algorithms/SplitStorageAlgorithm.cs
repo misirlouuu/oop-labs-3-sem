@@ -1,11 +1,8 @@
-using Backups.Archivers;
-using Backups.Composites;
 using Backups.Entities;
 using Backups.Interfaces;
-using Backups.Repositories;
-using Backups.Storages;
+using Backups.Models.Storages;
 
-namespace Backups.Algorithms;
+namespace Backups.Models.Algorithms;
 
 public class SplitStorageAlgorithm : IStorageAlgorithm
 {
@@ -15,7 +12,7 @@ public class SplitStorageAlgorithm : IStorageAlgorithm
         ArgumentNullException.ThrowIfNull(storageRepository);
         ArgumentNullException.ThrowIfNull(archiver);
 
-        var zipStorages = trackingObjects
+        ZipStorage[] zipStorages = trackingObjects
             .Select(backupObject => new List<IRepositoryObject> { backupObject.GetRepositoryObject() })
             .Select(repositoryObjects => archiver.Archive(repositoryObjects, storageRepository))
             .ToArray();

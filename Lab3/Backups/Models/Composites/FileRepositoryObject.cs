@@ -1,17 +1,18 @@
 using Backups.Interfaces;
-using Backups.Visitors;
 
-namespace Backups.Composites;
+namespace Backups.Models.Composites;
 
 public class FileRepositoryObject : IRepositoryObject
 {
     private readonly Func<Stream> _stream;
     public FileRepositoryObject(Func<Stream> stream, string name)
     {
-        _stream = stream;
-
         if (string.IsNullOrWhiteSpace(name))
+        {
             throw new ArgumentNullException(name);
+        }
+
+        _stream = stream;
         Name = name;
     }
 

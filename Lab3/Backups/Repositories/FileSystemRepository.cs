@@ -1,6 +1,6 @@
-using Backups.Composites;
 using Backups.Exceptions;
 using Backups.Interfaces;
+using Backups.Models.Composites;
 
 namespace Backups.Repositories;
 
@@ -12,7 +12,10 @@ public class FileSystemRepository : IRepository
     public FileSystemRepository(string rootPath)
     {
         if (string.IsNullOrWhiteSpace(rootPath))
+        {
             throw new ArgumentNullException(rootPath);
+        }
+
         RootPath = rootPath;
 
         _factory = Factory;
@@ -24,36 +27,34 @@ public class FileSystemRepository : IRepository
     public void ChangeRootDirectory(string path)
     {
         if (string.IsNullOrWhiteSpace(path))
+        {
             throw new ArgumentNullException(path);
+        }
+
         RootPath = Path.GetFullPath(path, RootPath);
     }
 
-    public bool Exists(string relativePath)
+    public Stream OpenWrite(string path)
     {
-        if (string.IsNullOrWhiteSpace(relativePath))
-            throw new ArgumentNullException(relativePath);
-        string absolutePath = Path.GetFullPath(relativePath, RootPath);
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            throw new ArgumentNullException(path);
+        }
 
-        return Directory.Exists(Path.GetDirectoryName(absolutePath));
-    }
-
-    public Stream OpenWrite(string relativePath)
-    {
-        if (string.IsNullOrWhiteSpace(relativePath))
-            throw new ArgumentNullException(relativePath);
-
-        string absolutePath = Path.GetFullPath(relativePath, RootPath);
+        string absolutePath = Path.GetFullPath(path, RootPath);
         Directory.CreateDirectory(Path.GetDirectoryName(absolutePath) ?? string.Empty);
 
         return new FileStream(absolutePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
     }
 
-    public IRepositoryObject GetRepositoryObject(string relativePath)
+    public IRepositoryObject GetRepositoryObject(string path)
     {
-        if (string.IsNullOrWhiteSpace(relativePath))
-            throw new ArgumentNullException(relativePath);
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            throw new ArgumentNullException(path);
+        }
 
-        string absolutePath = Path.GetFullPath(relativePath, RootPath);
+        string absolutePath = Path.GetFullPath(path, RootPath);
 
         if (File.Exists(absolutePath))
         {
@@ -68,12 +69,14 @@ public class FileSystemRepository : IRepository
         throw new BackupObjectIsNotFoundException();
     }
 
-    private IReadOnlyCollection<IRepositoryObject> Factory(string relativePath)
+    private IReadOnlyCollection<IRepositoryObject> Factory(string path)
     {
-        if (string.IsNullOrWhiteSpace(relativePath))
-            throw new ArgumentNullException(relativePath);
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            throw new ArgumentNullException(path);
+        }
 
-        string absolutePath = Path.GetFullPath(relativePath, RootPath);
+        string absolutePath = Path.GetFullPath(path, RootPath);
 
         var repositoryObjects = Directory.GetDirectories(absolutePath)
             .Select(GetRepositoryObject)

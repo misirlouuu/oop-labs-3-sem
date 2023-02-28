@@ -1,4 +1,4 @@
-using Backups.Storages;
+using Backups.Models.Storages;
 
 namespace Backups.Interfaces;
 

@@ -1,19 +1,17 @@
 using System.IO.Compression;
-using Backups.Algorithms;
-using Backups.Composites;
 using Backups.Interfaces;
-using Backups.Repositories;
+using Backups.Models.Composites;
 
-namespace Backups.Storages;
+namespace Backups.Models.Storages;
 
 public class ZipStorage : IStorage
 {
     public ZipStorage(IRepository repository, ZipFolder zipFolder)
     {
         ArgumentNullException.ThrowIfNull(repository);
-        Repository = repository;
-
         ArgumentNullException.ThrowIfNull(zipFolder);
+
+        Repository = repository;
         ZipFolder = zipFolder;
     }
 

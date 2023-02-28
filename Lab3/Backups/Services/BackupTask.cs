@@ -1,10 +1,7 @@
-using Backups.Algorithms;
-using Backups.Archivers;
 using Backups.Entities;
 using Backups.Exceptions;
 using Backups.Interfaces;
 using Backups.Repositories;
-using Backups.Storages;
 
 namespace Backups.Services;
 
@@ -22,20 +19,21 @@ public class BackupTask : IBackupTask
         IRepository repository,
         IArchiver archiver)
     {
+        ArgumentNullException.ThrowIfNull(trackingObjects);
+        ArgumentNullException.ThrowIfNull(repository);
+        ArgumentNullException.ThrowIfNull(algorithm);
+        ArgumentNullException.ThrowIfNull(archiver);
+
         if (string.IsNullOrWhiteSpace(name))
+        {
             throw new ArgumentNullException(name);
+        }
+
         Name = name;
 
-        ArgumentNullException.ThrowIfNull(trackingObjects);
         _trackingObjects = trackingObjects;
-
-        ArgumentNullException.ThrowIfNull(algorithm);
         _algorithm = algorithm;
-
-        ArgumentNullException.ThrowIfNull(repository);
         _repository = repository;
-
-        ArgumentNullException.ThrowIfNull(archiver);
         _archiver = archiver;
     }
 
@@ -58,7 +56,10 @@ public class BackupTask : IBackupTask
         ArgumentNullException.ThrowIfNull(backupObject);
 
         if (_trackingObjects.Contains(backupObject))
+        {
             throw new BackupObjectAlreadyExistsException();
+        }
+
         _trackingObjects.Add(backupObject);
 
         return backupObject;
@@ -69,7 +70,10 @@ public class BackupTask : IBackupTask
         ArgumentNullException.ThrowIfNull(backupObject);
 
         if (!_trackingObjects.Contains(backupObject))
+        {
             throw new BackupObjectIsNotFoundException();
+        }
+
         _trackingObjects.Remove(backupObject);
     }
 }

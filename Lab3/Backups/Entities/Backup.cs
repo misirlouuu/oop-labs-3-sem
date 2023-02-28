@@ -14,7 +14,10 @@ public class Backup : IBackup
         ArgumentNullException.ThrowIfNull(restorePoint);
 
         if (_backupCopy.Contains(restorePoint))
+        {
             throw new RestorePointAlreadyExistsException(restorePoint);
+        }
+
         _backupCopy.Add(restorePoint);
 
         return restorePoint;
@@ -25,7 +28,10 @@ public class Backup : IBackup
         ArgumentNullException.ThrowIfNull(restorePoint);
 
         if (!_backupCopy.Contains(restorePoint))
+        {
             throw new RestorePointIsNotFoundException(restorePoint);
+        }
+
         _backupCopy.Remove(restorePoint);
     }
 }

@@ -1,4 +1,4 @@
-using Backups.Composites;
+using Backups.Models.Composites;
 
 namespace Backups.Interfaces;
 

@@ -1,6 +1,6 @@
-﻿using Backups.Algorithms;
-using Backups.Archivers;
-using Backups.Entities;
+﻿using Backups.Entities;
+using Backups.Models;
+using Backups.Models.Algorithms;
 using Backups.Repositories;
 using Backups.Services;
 
