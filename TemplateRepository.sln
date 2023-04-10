@@ -40,6 +40,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backups.Extra", "Lab5\Backu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backups.Extra.Test", "Lab5\Backups.Extra.Test\Backups.Extra.Test.csproj", "{CDC9197E-D627-4705-8056-E67C46B786C7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "Lab3\ConsoleApp1\ConsoleApp1.csproj", "{1250F9A4-F4E0-4919-9F16-1408163269C2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,7 @@ Global
 		{9CC858CB-D630-46A2-B747-B9E01A4F71E5} = {6E70AB26-AC98-490D-B454-80F777EFCD1E}
 		{27848184-4868-4D22-B475-A939BD1EAB8B} = {C2F52C4E-F4C2-4C5E-A7BC-D12C9FFD9718}
 		{CDC9197E-D627-4705-8056-E67C46B786C7} = {C2F52C4E-F4C2-4C5E-A7BC-D12C9FFD9718}
+		{1250F9A4-F4E0-4919-9F16-1408163269C2} = {9EE07BED-3E62-43DB-83D6-6062C5F4A017}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{84E42B8D-F84E-4173-BCE3-D4FCA4BDED18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -113,5 +116,9 @@ Global
 		{CDC9197E-D627-4705-8056-E67C46B786C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CDC9197E-D627-4705-8056-E67C46B786C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CDC9197E-D627-4705-8056-E67C46B786C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1250F9A4-F4E0-4919-9F16-1408163269C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1250F9A4-F4E0-4919-9F16-1408163269C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1250F9A4-F4E0-4919-9F16-1408163269C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1250F9A4-F4E0-4919-9F16-1408163269C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
