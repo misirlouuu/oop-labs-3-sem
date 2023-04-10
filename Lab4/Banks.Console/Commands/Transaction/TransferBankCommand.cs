@@ -34,7 +34,7 @@ public class TransferBankCommand : IBankCommand
 
     public void Execute()
     {
-       CentralBank.Instance.TransferMoney(
+       ITransaction transaction = CentralBank.Instance.TransferMoney(
             _bankFrom,
             _accountFrom,
             _bankTo,
@@ -44,6 +44,7 @@ public class TransferBankCommand : IBankCommand
                              $"from the account with id {_accountFrom.Id} " +
                              $"to bank {_bankTo.Name} to account with id {_accountTo.Id} \n" +
                              $"current balance of the first account: {_accountFrom.Money} \n" +
-                             $"current balance of the second account: {_accountTo.Money}");
+                             $"current balance of the second account: {_accountTo.Money} \n " +
+                             $"transaction id: {transaction.Id}");
     }
 }
